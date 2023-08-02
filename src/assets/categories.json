@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "name": "Carbs"
+    },
+    {
+        "id": 2,
+        "name": "Protein"
+    },
+    {
+        "id": 3,
+        "name": "Dairy"
+    },
+    {
+        "id": 4,
+        "name": "Candies"
+    },
+    {
+        "id": 5,
+        "name": "Fruits & Vegetables"
+    },
+    {
+        "id": 6,
+        "name": "Beverage"
+    },
+    {
+        "id": 7,
+        "name": "Oils"
+    },
+    {
+        "id": 8,
+        "name": "Species"
+    }
+]

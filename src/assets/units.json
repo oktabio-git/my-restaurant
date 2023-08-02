@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "Ounces"
+    },
+    {
+        "id": 2,
+        "name": "Grams"
+    },
+    {
+        "id": 3,
+        "name": "Kilograms"
+    },
+    {
+        "id": 4,
+        "name": "Pieces"
+    },
+    {
+        "id": 5,
+        "name": "Liters"
+    },
+    {
+        "id": 6,
+        "name": "Milimeters"
+    }
+]
