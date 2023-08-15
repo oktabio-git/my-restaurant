@@ -8,6 +8,7 @@ import { Routes, Route } from "react-router-dom";
 
 function App() {
     const [ingredients, setIngredients] = useState<IIngredient[]>([]);
+    const [ingredient, setIngredient] = useState<IIngredient>();
 
     return (
         <div className="App">
@@ -20,6 +21,8 @@ function App() {
                         <Fridge
                             ingredients={ingredients}
                             setIngredients={setIngredients}
+                            ingredient={ingredient}
+                            setIngredient={setIngredient}
                         ></Fridge>
                     }
                 ></Route>

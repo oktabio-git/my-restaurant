@@ -1,4 +1,4 @@
 export interface IUnit {
-    id: number;
-    name: string;
+    value: number;
+    label: string;
 }

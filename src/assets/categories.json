@@ -1,34 +1,34 @@
 [
     {
-        "id": 1,
-        "name": "Carbs"
+        "value": 1,
+        "label": "Carbs"
     },
     {
-        "id": 2,
-        "name": "Protein"
+        "value": 2,
+        "label": "Protein"
     },
     {
-        "id": 3,
-        "name": "Dairy"
+        "value": 3,
+        "label": "Dairy"
     },
     {
-        "id": 4,
-        "name": "Candies"
+        "value": 4,
+        "label": "Candies"
     },
     {
-        "id": 5,
-        "name": "Fruits & Vegetables"
+        "value": 5,
+        "label": "Fruits & Vegetables"
     },
     {
-        "id": 6,
-        "name": "Beverage"
+        "value": 6,
+        "label": "Beverage"
     },
     {
-        "id": 7,
-        "name": "Oils"
+        "value": 7,
+        "label": "Oils"
     },
     {
-        "id": 8,
-        "name": "Species"
+        "value": 8,
+        "label": "Species"
     }
 ]

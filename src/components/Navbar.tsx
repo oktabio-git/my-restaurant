@@ -1,11 +1,39 @@
-function Navbar() {
+import {
+    AppBar,
+    Box,
+    Button,
+    IconButton,
+    Toolbar,
+    Typography,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+
+const Navbar = () => {
     return (
-        <nav className="navbar bg-body-tertiary">
-            <div className="container-fluid">
-                <span className="navbar-brand mb-0 h1">Navbar</span>
-            </div>
-        </nav>
+        <Box sx={{ flexGrow: 1 }}>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{ mr: 2 }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography
+                        variant="h6"
+                        component="div"
+                        sx={{ flexGrow: 1 }}
+                    >
+                        The Restaurant
+                    </Typography>
+                    <Button color="inherit">Login</Button>
+                </Toolbar>
+            </AppBar>
+        </Box>
     );
-}
+};
 
 export default Navbar;

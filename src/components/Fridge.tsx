@@ -1,54 +1,96 @@
 import Form from "./Form";
-import Tabs from "./Tabs";
-import Table from "./Table";
+// import Tabs from "./Tabs";
+import IngredientsTable from "./IngredientsTable";
 import categories from "../assets/categories.json";
 import units from "../assets/units.json";
 import { useState } from "react";
 import { IIngredient } from "../interfaces/Ingredient";
+import { Box, Button, Grid, Tab } from "@mui/material";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 type IProps = {
     ingredients: IIngredient[];
     setIngredients: (data: IIngredient[]) => void;
+    ingredient?: IIngredient;
+    setIngredient: (data: IIngredient) => void;
 };
 
-const Fridge: React.FC<IProps> = ({ ingredients, setIngredients }) => { // Check about FC
+const Fridge: React.FC<IProps> = ({
+    ingredients,
+    setIngredients,
+    ingredient,
+    setIngredient,
+}) => {
+    const [editFlag, setEditFlag] = useState(false);
+    // Check about FC
     const [visible, setVisible] = useState(false);
     const handleToggle = () => {
         setVisible((current) => !current);
     };
     const handleOnSubmit = (ingredient: IIngredient) => {
-        console.log(ingredient);
         setIngredients([ingredient, ...ingredients]);
+    };
+    const handleOnSubmitEdit = (ingredient: IIngredient) => {
+        const updatedIngs = ingredients.findIndex((ing) => {
+            return ing.id === ingredient.id;
+        })
+        ingredients[updatedIngs] = ingredient;
+        setIngredients(ingredients);
+        setEditFlag(false);
+    };
+    const handleOnEdit = (ingredient: IIngredient) => {
+        setIngredient(ingredient);
+        setEditFlag(true);
+    };
+    const [value, setValue] = useState("1");
+
+    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+        setValue(newValue);
     };
 
     return (
-        <div className="row mt-3">
-            <div className="col-10 offset-1">
-                <Tabs />
-            </div>
-            <div className="col-10 offset-1">
-                <div className="row">
-                    <div className={`${visible ? "col-9" : "col-12"}`}>
-                        {/* <Table /> */}
-                        <button
-                            className="btn btn-primary w-25 mt-3"
-                            onClick={handleToggle}
-                        >
-                            + New Ingredient
-                        </button>
-                    </div>
+        <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                <TabList
+                    onChange={handleChange}
+                    aria-label="lab API tabs example"
+                >
+                    <Tab label="Available" value="1" />
+                    <Tab label="Not Available" value="2" />
+                </TabList>
+            </Box>
+            <TabPanel value="1">
+                <Grid container spacing={2}>
+                    <Grid item xs={visible ? 9 : 12} xl={visible ? 9 : 12}>
+                        <IngredientsTable
+                            ingredients={ingredients}
+                            setIngredients={setIngredients}
+                            handleOnEdit={handleOnEdit}
+                            categories={categories}
+                            units={units}
+                        />
+                        <Box mt={2}>
+                            <Button variant="contained" onClick={handleToggle}>
+                                + New Ingredient
+                            </Button>
+                        </Box>
+                    </Grid>
                     {visible && (
-                        <div className="col-3">
+                        <Grid item xs={3} xl={3}>
                             <Form
                                 handleOnSubmit={handleOnSubmit}
+                                handleOnSubmitEdit={handleOnSubmitEdit}
                                 categories={categories}
                                 units={units}
+                                editFlag={editFlag}
+                                ingredient={ingredient}
                             />
-                        </div>
+                        </Grid>
                     )}
-                </div>
-            </div>
-        </div>
+                </Grid>
+            </TabPanel>
+            <TabPanel value="2">Item Two</TabPanel>
+        </TabContext>
     );
 };
 export default Fridge;

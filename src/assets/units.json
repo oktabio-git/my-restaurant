@@ -1,26 +1,26 @@
 [
     {
-        "id": 1,
-        "name": "Ounces"
+        "value": 1,
+        "label": "Ounces"
     },
     {
-        "id": 2,
-        "name": "Grams"
+        "value": 2,
+        "label": "Grams"
     },
     {
-        "id": 3,
-        "name": "Kilograms"
+        "value": 3,
+        "label": "Kilograms"
     },
     {
-        "id": 4,
-        "name": "Pieces"
+        "value": 4,
+        "label": "Pieces"
     },
     {
-        "id": 5,
-        "name": "Liters"
+        "value": 5,
+        "label": "Liters"
     },
     {
-        "id": 6,
-        "name": "Milimeters"
+        "value": 6,
+        "label": "Milimeters"
     }
 ]
