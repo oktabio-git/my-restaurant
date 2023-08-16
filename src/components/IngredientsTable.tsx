@@ -17,7 +17,7 @@ import { IUnit } from "../interfaces/unit";
 type IProps = {
     ingredients: IIngredient[];
     setIngredients: (data: IIngredient[]) => void;
-    handleOnEdit: (data: IIngredient ) => void;
+    handleOnEdit: (data: IIngredient) => void;
     categories: ICategory[];
     units: IUnit[];
 };

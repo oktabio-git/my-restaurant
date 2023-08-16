@@ -4,6 +4,7 @@ import { ICategory } from "../interfaces/category";
 import { IUnit } from "../interfaces/unit";
 import { IIngredient } from "../interfaces/Ingredient";
 import { Button, Container, MenuItem, Stack, TextField } from "@mui/material";
+import axios from "axios";
 
 type IProps = {
     handleOnSubmit: (ingredient: IIngredient) => void;
@@ -22,6 +23,18 @@ const Form: React.FC<IProps> = ({
     ingredient,
     editFlag,
 }) => {
+    // const createIngredient = (ingredient: IIngredient) => {
+    //     try {
+    //         const url = "http://localhost:3000";
+    //         const response = axios.post<IIngredient>(
+    //             `${url}/ingredients`,
+    //             ingredient
+    //         );
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
+
     const [formIngredient, setFormIngredient] = useState<IIngredient>({
         id: "",
         name: "",
@@ -80,6 +93,7 @@ const Form: React.FC<IProps> = ({
                     unit: 0,
                 });
             } else {
+                // createIngredient(formIngredient);
                 handleOnSubmit(formIngredient);
                 setFormIngredient({
                     id: "",
@@ -107,9 +121,7 @@ const Form: React.FC<IProps> = ({
         }));
     };
 
-    const handleCancel = () => {
-        
-    };
+    const handleCancel = () => {};
 
     const categoryData = categories.map((category) => {
         return (

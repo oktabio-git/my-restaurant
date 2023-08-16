@@ -1,39 +1,30 @@
 import Form from "./Form";
-// import Tabs from "./Tabs";
 import IngredientsTable from "./IngredientsTable";
-import categories from "../assets/categories.json";
-import units from "../assets/units.json";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IIngredient } from "../interfaces/Ingredient";
 import { Box, Button, Grid, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { ICategory } from "../interfaces/category";
+import { IUnit } from "../interfaces/unit";
+import useFetch from "../hooks/useFetch";
 
-type IProps = {
-    ingredients: IIngredient[];
-    setIngredients: (data: IIngredient[]) => void;
-    ingredient?: IIngredient;
-    setIngredient: (data: IIngredient) => void;
-};
-
-const Fridge: React.FC<IProps> = ({
-    ingredients,
-    setIngredients,
-    ingredient,
-    setIngredient,
-}) => {
+const Fridge: React.FC = () => {
+    const [ingredients, setIngredients] = useState<IIngredient[]>([]);
+    const [ingredient, setIngredient] = useState<IIngredient>();
+    const { getApis, postApis } = useFetch();
     const [editFlag, setEditFlag] = useState(false);
-    // Check about FC
     const [visible, setVisible] = useState(false);
     const handleToggle = () => {
         setVisible((current) => !current);
     };
     const handleOnSubmit = (ingredient: IIngredient) => {
-        setIngredients([ingredient, ...ingredients]);
+        postApis("ingredients", ingredient);
+        
     };
     const handleOnSubmitEdit = (ingredient: IIngredient) => {
         const updatedIngs = ingredients.findIndex((ing) => {
             return ing.id === ingredient.id;
-        })
+        });
         ingredients[updatedIngs] = ingredient;
         setIngredients(ingredients);
         setEditFlag(false);
@@ -47,6 +38,24 @@ const Fridge: React.FC<IProps> = ({
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
     };
+    const [categories, setCategories] = useState<ICategory[]>([]);
+    const [units, setUnits] = useState<IUnit[]>([]);
+    useEffect(() => {
+        (async () => {
+            const categories = await getApis("categories");
+            setCategories(categories);
+            const units = await getApis("units");
+            setUnits(units);
+            const resIngredients = await getApis("ingredients");
+            setIngredients(resIngredients);
+        })();
+    }, []);
+    useEffect(() => {
+        (async () => {
+            const resIngredients = await getApis("ingredients");
+            setIngredients(resIngredients);
+        })();
+    }, []);
 
     return (
         <TabContext value={value}>

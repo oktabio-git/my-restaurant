@@ -1,0 +1,102 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "categories": [
+    {
+      "value": 1,
+      "label": "Carbs"
+    },
+    {
+      "value": 2,
+      "label": "Protein"
+    },
+    {
+      "value": 3,
+      "label": "Dairy"
+    },
+    {
+      "value": 4,
+      "label": "Candies"
+    },
+    {
+      "value": 5,
+      "label": "Fruits & Vegetables"
+    },
+    {
+      "value": 6,
+      "label": "Beverage"
+    },
+    {
+      "value": 7,
+      "label": "Oils"
+    },
+    {
+      "value": 8,
+      "label": "Species"
+    }
+  ],
+  "units": [
+    {
+      "value": 1,
+      "label": "Ounces"
+    },
+    {
+      "value": 2,
+      "label": "Grams"
+    },
+    {
+      "value": 3,
+      "label": "Kilograms"
+    },
+    {
+      "value": 4,
+      "label": "Pieces"
+    },
+    {
+      "value": 5,
+      "label": "Liters"
+    },
+    {
+      "value": 6,
+      "label": "Milimeters"
+    }
+  ],
+  "ingredients": [
+    {
+      "id": "bc0a665e-620c-4686-bb8a-31cd16c379de",
+      "name": "Avocado",
+      "category": 3,
+      "quantity": "1",
+      "unit": 2
+    },
+    {
+      "id": "d95dad2c-35af-4061-adfa-564984298cc1",
+      "name": "Potato",
+      "category": 2,
+      "quantity": "2",
+      "unit": 3
+    },
+    {
+      "id": "e5f4ee32-aaa9-42dd-9213-ec27b33d43bc",
+      "name": "Apple",
+      "category": 5,
+      "quantity": "3",
+      "unit": 5
+    }
+  ]
+}
