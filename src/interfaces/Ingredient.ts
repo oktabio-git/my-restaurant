@@ -4,4 +4,5 @@ export interface IIngredient {
     unit: number;
     category: number;
     quantity: number;
+    status: boolean;
 }

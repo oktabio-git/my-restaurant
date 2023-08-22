@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 const useFetch = () => {
     const url = "http://localhost:3000";
@@ -20,7 +20,20 @@ const useFetch = () => {
             return err;
         }
     };
-    return { getApis, postApis };
+    const updateApis = async (
+        flag: string,
+        id: string,
+        body: Record<any, any>
+    ) => {
+        try {
+            const response = await axios.put(`${url}/${flag}/${id}`, body);
+            return response.status;
+        } catch (err) {
+            console.log(err);
+            return err;
+        }
+    };
+    return { getApis, postApis, updateApis };
 };
 
 export default useFetch;

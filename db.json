@@ -81,21 +81,72 @@
       "id": "bc0a665e-620c-4686-bb8a-31cd16c379de",
       "name": "Avocado",
       "category": 3,
-      "quantity": "1",
-      "unit": 2
+      "quantity": 0,
+      "unit": 2,
+      "status": false
     },
     {
       "id": "d95dad2c-35af-4061-adfa-564984298cc1",
       "name": "Potato",
       "category": 2,
-      "quantity": "2",
-      "unit": 3
+      "quantity": 3,
+      "unit": 3,
+      "status": true
     },
     {
       "id": "e5f4ee32-aaa9-42dd-9213-ec27b33d43bc",
       "name": "Apple",
       "category": 5,
-      "quantity": "3",
+      "quantity": 2,
+      "unit": 5,
+      "status": true
+    },
+    {
+      "id": "98f17d20-6072-47e5-b7fe-37259b619c20",
+      "name": "Melon",
+      "category": 7,
+      "quantity": 2,
+      "unit": 3,
+      "status": true
+    },
+    {
+      "id": "3dcbe0bf-d3ea-4e14-99c7-921d6d1f6bda",
+      "name": "Watermelon",
+      "category": 6,
+      "quantity": 1,
+      "unit": 3,
+      "status": true
+    },
+    {
+      "id": "a2321a55-5de5-4e81-8055-c189069615aa",
+      "name": "Harina",
+      "category": 5,
+      "quantity": 2,
+      "unit": 5,
+      "status": true
+    }
+  ],
+  "cart": [
+    {
+      "id": "e5f4ee32-aaa9-42dd-9213-ec27b33d43bc",
+      "name": "Apple",
+      "category": 5,
+      "quantity": 2,
+      "unit": 5
+    },
+    {
+      "id": "a2321a55-5de5-4e81-8055-c189069615aa",
+      "name": "Harina",
+      "category": 5,
+      "quantity": 1,
+      "unit": 5,
+      "status": true
+    },
+    {
+      "id": "bc0a665e-620c-4686-bb8a-31cd16c379de",
+      "name": "Apple",
+      "category": 5,
+      "quantity": 2,
       "unit": 5
     }
   ]

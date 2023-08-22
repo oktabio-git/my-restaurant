@@ -1,6 +1,6 @@
 import Form from "./Form";
 import IngredientsTable from "./IngredientsTable";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { IIngredient } from "../interfaces/Ingredient";
 import { Box, Button, Grid, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
@@ -8,19 +8,37 @@ import { ICategory } from "../interfaces/category";
 import { IUnit } from "../interfaces/unit";
 import useFetch from "../hooks/useFetch";
 
-const Fridge: React.FC = () => {
-    const [ingredients, setIngredients] = useState<IIngredient[]>([]);
+type IProps = {
+    categories: ICategory[];
+    units: IUnit[];
+    ingredients: IIngredient[];
+    cartIngred: IIngredient[];
+    setIngredients: (data: IIngredient[]) => void;
+};
+
+const Fridge: React.FC<IProps> = ({
+    categories,
+    units,
+    ingredients,
+    cartIngred,
+    setIngredients,
+}) => {
     const [ingredient, setIngredient] = useState<IIngredient>();
-    const { getApis, postApis } = useFetch();
+    const { getApis, postApis, updateApis } = useFetch();
     const [editFlag, setEditFlag] = useState(false);
     const [visible, setVisible] = useState(false);
+    const [value, setValue] = useState("1");
     const handleToggle = () => {
         setVisible((current) => !current);
     };
-    const handleOnSubmit = (ingredient: IIngredient) => {
-        postApis("ingredients", ingredient);
-        
-    };
+    const handleOnSubmit = useCallback(async (ingredient: IIngredient) => {
+        await postApis("ingredients", ingredient);
+        getIngredients();
+    }, []);
+    const getIngredients = useCallback(async () => {
+        const resIngredients = await getApis("ingredients");
+        setIngredients(resIngredients);
+    }, []);
     const handleOnSubmitEdit = (ingredient: IIngredient) => {
         const updatedIngs = ingredients.findIndex((ing) => {
             return ing.id === ingredient.id;
@@ -33,27 +51,47 @@ const Fridge: React.FC = () => {
         setIngredient(ingredient);
         setEditFlag(true);
     };
-    const [value, setValue] = useState("1");
-
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
     };
-    const [categories, setCategories] = useState<ICategory[]>([]);
-    const [units, setUnits] = useState<IUnit[]>([]);
+    const handleOnCart = async (id: string) => {
+        const indexIng = ingredients.findIndex((ing) => {
+            return ing.id === id;
+        });
+        const cartIndex = cartIngred.findIndex((ing) => {
+            return ing.id === id;
+        });
+        console.log(ingredients[indexIng]);
+        if (ingredients[indexIng].quantity > 1) {
+            ingredients[indexIng].quantity--;
+        } else {
+            ingredients[indexIng].quantity--;
+            ingredients[indexIng].status = false;
+        }
+        console.log(ingredients[indexIng]);
+
+        if (cartIndex > 0) {
+            cartIngred[cartIndex].quantity++;
+            await updateApis("cart", id, cartIngred[indexIng]);
+        } else {
+            let tempIng = ingredients[indexIng];
+            tempIng.quantity = 1;
+            await postApis("cart", tempIng);
+        }
+        
+        
+        await updateApis("ingredients", id, ingredients[indexIng]);
+        await getIngredients();
+    };
+
     useEffect(() => {
         (async () => {
             const categories = await getApis("categories");
-            setCategories(categories);
+            // setCategories(categories);
             const units = await getApis("units");
-            setUnits(units);
+            // setUnits(units);
             const resIngredients = await getApis("ingredients");
-            setIngredients(resIngredients);
-        })();
-    }, []);
-    useEffect(() => {
-        (async () => {
-            const resIngredients = await getApis("ingredients");
-            setIngredients(resIngredients);
+            // setIngredients(resIngredients);
         })();
     }, []);
 
@@ -72,9 +110,10 @@ const Fridge: React.FC = () => {
                 <Grid container spacing={2}>
                     <Grid item xs={visible ? 9 : 12} xl={visible ? 9 : 12}>
                         <IngredientsTable
-                            ingredients={ingredients}
+                            ingredients={ingredients.filter(ing => ing.status)}
                             setIngredients={setIngredients}
                             handleOnEdit={handleOnEdit}
+                            handleOnCart={handleOnCart}
                             categories={categories}
                             units={units}
                         />
@@ -98,7 +137,37 @@ const Fridge: React.FC = () => {
                     )}
                 </Grid>
             </TabPanel>
-            <TabPanel value="2">Item Two</TabPanel>
+            <TabPanel value="2">
+                <Grid container spacing={2}>
+                    <Grid item xs={visible ? 9 : 12} xl={visible ? 9 : 12}>
+                        <IngredientsTable
+                            ingredients={ingredients.filter(ing => !ing.status)}
+                            setIngredients={setIngredients}
+                            handleOnEdit={handleOnEdit}
+                            handleOnCart={handleOnCart}
+                            categories={categories}
+                            units={units}
+                        />
+                        <Box mt={2}>
+                            <Button variant="contained" onClick={handleToggle}>
+                                + New Ingredient
+                            </Button>
+                        </Box>
+                    </Grid>
+                    {visible && (
+                        <Grid item xs={3} xl={3}>
+                            <Form
+                                handleOnSubmit={handleOnSubmit}
+                                handleOnSubmitEdit={handleOnSubmitEdit}
+                                categories={categories}
+                                units={units}
+                                editFlag={editFlag}
+                                ingredient={ingredient}
+                            />
+                        </Grid>
+                    )}
+                </Grid>
+            </TabPanel>
         </TabContext>
     );
 };

@@ -3,8 +3,15 @@ import { v4 as uuidv4 } from "uuid";
 import { ICategory } from "../interfaces/category";
 import { IUnit } from "../interfaces/unit";
 import { IIngredient } from "../interfaces/Ingredient";
-import { Button, Container, MenuItem, Stack, TextField } from "@mui/material";
-import axios from "axios";
+import {
+    Alert,
+    Button,
+    Container,
+    MenuItem,
+    Snackbar,
+    Stack,
+    TextField,
+} from "@mui/material";
 
 type IProps = {
     handleOnSubmit: (ingredient: IIngredient) => void;
@@ -23,24 +30,13 @@ const Form: React.FC<IProps> = ({
     ingredient,
     editFlag,
 }) => {
-    // const createIngredient = (ingredient: IIngredient) => {
-    //     try {
-    //         const url = "http://localhost:3000";
-    //         const response = axios.post<IIngredient>(
-    //             `${url}/ingredients`,
-    //             ingredient
-    //         );
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // };
-
     const [formIngredient, setFormIngredient] = useState<IIngredient>({
         id: "",
         name: "",
         category: 0,
         quantity: 0,
         unit: 0,
+        status: false,
     });
     const [formError, setErrorForm] = useState({
         nameError: false,
@@ -49,6 +45,7 @@ const Form: React.FC<IProps> = ({
         unitError: false,
     });
     const { name, category, quantity, unit } = formIngredient;
+    const [open, setOpen] = useState(true);
     useEffect(() => {
         if (editFlag) {
             setFormIngredient({
@@ -56,16 +53,11 @@ const Form: React.FC<IProps> = ({
                 name: ingredient ? ingredient.name : "",
                 category: ingredient ? ingredient.category : 0,
                 quantity: ingredient ? ingredient.quantity : 0,
-                unit: ingredient ? ingredient.unit : 1,
+                unit: ingredient ? ingredient.unit : 0,
+                status: ingredient ? ingredient.status : false,
             });
         }
     }, [editFlag]);
-
-    // Separar las funcionalidades por dos botones distintos.
-    // ?? ||
-    // Limpiar el formulario.
-    // Diferencia entre value y value
-
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const values = [name, category, quantity, unit];
@@ -82,6 +74,7 @@ const Form: React.FC<IProps> = ({
                 category,
                 quantity,
                 unit,
+                status: true,
             };
             if (editFlag) {
                 handleOnSubmitEdit(formIngredient);
@@ -91,9 +84,10 @@ const Form: React.FC<IProps> = ({
                     category: 0,
                     quantity: 0,
                     unit: 0,
+                    status: false,
                 });
+                setOpen(true);
             } else {
-                // createIngredient(formIngredient);
                 handleOnSubmit(formIngredient);
                 setFormIngredient({
                     id: "",
@@ -101,12 +95,13 @@ const Form: React.FC<IProps> = ({
                     category: 0,
                     quantity: 0,
                     unit: 0,
+                    status: false,
                 });
+                setOpen(true);
             }
         } else {
         }
     };
-
     const handleInputChange = (
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
@@ -120,8 +115,17 @@ const Form: React.FC<IProps> = ({
             [name]: value,
         }));
     };
-
     const handleCancel = () => {};
+    const handleClose = (
+        event?: React.SyntheticEvent | Event,
+        reason?: string
+    ) => {
+        if (reason === "clickaway") {
+            return;
+        }
+
+        setOpen(false);
+    };
 
     const categoryData = categories.map((category) => {
         return (
@@ -227,6 +231,16 @@ const Form: React.FC<IProps> = ({
                     </Stack>
                 </Stack>
             </form>
+            <Snackbar
+                open={open}
+                autoHideDuration={6000}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            >
+                <Alert severity="success" sx={{ width: "100%" }}>
+                    Ingredient {editFlag ? "updated" : "added"} successfully.
+                </Alert>
+            </Snackbar>
         </Container>
     );
 };

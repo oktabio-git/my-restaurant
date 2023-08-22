@@ -11,23 +11,26 @@ import {
 import { IIngredient } from "../interfaces/Ingredient";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { ICategory } from "../interfaces/category";
 import { IUnit } from "../interfaces/unit";
 
 type IProps = {
     ingredients: IIngredient[];
-    setIngredients: (data: IIngredient[]) => void;
-    handleOnEdit: (data: IIngredient) => void;
     categories: ICategory[];
     units: IUnit[];
+    setIngredients: (data: IIngredient[]) => void;
+    handleOnEdit?: (data: IIngredient) => void;
+    handleOnCart?: (data: string) => void;
 };
 
 const IngredientsTable: React.FC<IProps> = ({
     ingredients,
-    setIngredients,
-    handleOnEdit,
     categories,
     units,
+    setIngredients,
+    handleOnEdit,
+    handleOnCart,
 }) => {
     const deleteIngredient = (id: string) => {
         setIngredients(
@@ -35,9 +38,6 @@ const IngredientsTable: React.FC<IProps> = ({
                 (ingredient: IIngredient) => ingredient.id !== id
             )
         );
-    };
-    const editIngredient = (ing: IIngredient) => {
-        handleOnEdit(ing);
     };
     const showCategory = (id: number): string => {
         const category = categories.find((category) => {
@@ -91,10 +91,25 @@ const IngredientsTable: React.FC<IProps> = ({
                                 {showUnit(ingredient.unit)}
                             </TableCell>
                             <TableCell>
+                                {ingredient.status && (
+                                    <IconButton
+                                        color="primary"
+                                        aria-label="edit"
+                                        onClick={() => {
+                                            handleOnCart &&
+                                                handleOnCart(ingredient.id);
+                                        }}
+                                    >
+                                        <ShoppingCartIcon />
+                                    </IconButton>
+                                )}
                                 <IconButton
                                     color="primary"
                                     aria-label="edit"
-                                    onClick={() => editIngredient(ingredient)}
+                                    onClick={() => {
+                                        handleOnEdit &&
+                                            handleOnEdit(ingredient);
+                                    }}
                                 >
                                     <EditIcon />
                                 </IconButton>
