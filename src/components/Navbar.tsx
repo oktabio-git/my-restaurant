@@ -4,22 +4,13 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { ICategory } from "../interfaces/category";
 import { IUnit } from "../interfaces/unit";
 import { IIngredient } from "../interfaces/Ingredient";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { defaultContext } from "../App";
 
-type IProps = {
-    categories: ICategory[];
-    units: IUnit[];
-    ingredients: IIngredient[];
-    setIngredients: (data: IIngredient[]) => void;
-};
-
-const Navbar: React.FC<IProps> = ({
-    categories,
-    units,
-    ingredients,
-    setIngredients,
-}) => {
+const Navbar: React.FC = () => {
+    const { cartIngreds } =
+        useContext(defaultContext);
     const navigate = useNavigate();
     const navigateToContacts = () => {
         // 👇️ navigate to /contacts

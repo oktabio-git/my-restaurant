@@ -38,14 +38,17 @@ const Form: React.FC<IProps> = ({
         unit: 0,
         status: false,
     });
+
     const [formError, setErrorForm] = useState({
         nameError: false,
         categoryError: false,
         quantityError: false,
         unitError: false,
     });
+
     const { name, category, quantity, unit } = formIngredient;
     const [open, setOpen] = useState(true);
+
     useEffect(() => {
         if (editFlag) {
             setFormIngredient({
@@ -58,6 +61,7 @@ const Form: React.FC<IProps> = ({
             });
         }
     }, [editFlag]);
+
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const values = [name, category, quantity, unit];
@@ -102,6 +106,7 @@ const Form: React.FC<IProps> = ({
         } else {
         }
     };
+
     const handleInputChange = (
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
@@ -115,7 +120,9 @@ const Form: React.FC<IProps> = ({
             [name]: value,
         }));
     };
+
     const handleCancel = () => {};
+    
     const handleClose = (
         event?: React.SyntheticEvent | Event,
         reason?: string

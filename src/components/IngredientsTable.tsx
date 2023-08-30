@@ -22,6 +22,7 @@ type IProps = {
     setIngredients: (data: IIngredient[]) => void;
     handleOnEdit?: (data: IIngredient) => void;
     handleOnCart?: (data: string) => void;
+    cartFlag?: boolean;
 };
 
 const IngredientsTable: React.FC<IProps> = ({
@@ -31,6 +32,7 @@ const IngredientsTable: React.FC<IProps> = ({
     setIngredients,
     handleOnEdit,
     handleOnCart,
+    cartFlag,
 }) => {
     const deleteIngredient = (id: string) => {
         setIngredients(
@@ -91,7 +93,7 @@ const IngredientsTable: React.FC<IProps> = ({
                                 {showUnit(ingredient.unit)}
                             </TableCell>
                             <TableCell>
-                                {ingredient.status && (
+                                {!cartFlag && (
                                     <IconButton
                                         color="primary"
                                         aria-label="edit"
@@ -103,16 +105,18 @@ const IngredientsTable: React.FC<IProps> = ({
                                         <ShoppingCartIcon />
                                     </IconButton>
                                 )}
-                                <IconButton
-                                    color="primary"
-                                    aria-label="edit"
-                                    onClick={() => {
-                                        handleOnEdit &&
-                                            handleOnEdit(ingredient);
-                                    }}
-                                >
-                                    <EditIcon />
-                                </IconButton>
+                                {!cartFlag && (
+                                    <IconButton
+                                        color="primary"
+                                        aria-label="edit"
+                                        onClick={() => {
+                                            handleOnEdit &&
+                                                handleOnEdit(ingredient);
+                                        }}
+                                    >
+                                        <EditIcon />
+                                    </IconButton>
+                                )}
                                 <IconButton
                                     color="primary"
                                     aria-label="delete"

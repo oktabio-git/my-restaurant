@@ -1,28 +1,20 @@
 import Form from "./Form";
 import IngredientsTable from "./IngredientsTable";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { IIngredient } from "../interfaces/Ingredient";
 import { Box, Button, Grid, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { ICategory } from "../interfaces/category";
-import { IUnit } from "../interfaces/unit";
 import useFetch from "../hooks/useFetch";
+import { defaultContext } from "../App";
 
 type IProps = {
-    categories: ICategory[];
-    units: IUnit[];
-    ingredients: IIngredient[];
-    cartIngred: IIngredient[];
     setIngredients: (data: IIngredient[]) => void;
+    setCartIngred: (data: IIngredient[]) => void;
 };
 
-const Fridge: React.FC<IProps> = ({
-    categories,
-    units,
-    ingredients,
-    cartIngred,
-    setIngredients,
-}) => {
+const Fridge: React.FC<IProps> = ({ setIngredients, setCartIngred }) => {
+    const { ingredients, categories, units, cartIngreds } =
+        useContext(defaultContext);
     const [ingredient, setIngredient] = useState<IIngredient>();
     const { getApis, postApis, updateApis } = useFetch();
     const [editFlag, setEditFlag] = useState(false);
@@ -38,6 +30,10 @@ const Fridge: React.FC<IProps> = ({
     const getIngredients = useCallback(async () => {
         const resIngredients = await getApis("ingredients");
         setIngredients(resIngredients);
+    }, []);
+    const getCartIngredients = useCallback(async () => {
+        const resIngredients = await getApis("cart");
+        setCartIngred(resIngredients);
     }, []);
     const handleOnSubmitEdit = (ingredient: IIngredient) => {
         const updatedIngs = ingredients.findIndex((ing) => {
@@ -55,48 +51,34 @@ const Fridge: React.FC<IProps> = ({
         setValue(newValue);
     };
     const handleOnCart = async (id: string) => {
-        const indexIng = ingredients.findIndex((ing) => {
-            return ing.id === id;
+        const indexIng = ingredients.findIndex((ingred: IIngredient) => {
+            return ingred.id === id;
         });
-        const cartIndex = cartIngred.findIndex((ing) => {
-            return ing.id === id;
+        const cartIndex = cartIngreds.findIndex((ingred: IIngredient) => {
+            return ingred.id === id;
         });
-        console.log(ingredients[indexIng]);
+        let tempIngred = { ...ingredients[indexIng] };
         if (ingredients[indexIng].quantity > 1) {
             ingredients[indexIng].quantity--;
         } else {
             ingredients[indexIng].quantity--;
             ingredients[indexIng].status = false;
         }
-        console.log(ingredients[indexIng]);
-
         if (cartIndex > 0) {
-            cartIngred[cartIndex].quantity++;
-            await updateApis("cart", id, cartIngred[indexIng]);
+            cartIngreds[cartIndex].quantity++;
+            await updateApis("cart", id, cartIngreds[cartIndex]);
         } else {
-            let tempIng = ingredients[indexIng];
-            tempIng.quantity = 1;
-            await postApis("cart", tempIng);
+            tempIngred.quantity = 1;
+            await postApis("cart", tempIngred);
         }
-        
-        
         await updateApis("ingredients", id, ingredients[indexIng]);
         await getIngredients();
+        await getCartIngredients();
     };
-
-    useEffect(() => {
-        (async () => {
-            const categories = await getApis("categories");
-            // setCategories(categories);
-            const units = await getApis("units");
-            // setUnits(units);
-            const resIngredients = await getApis("ingredients");
-            // setIngredients(resIngredients);
-        })();
-    }, []);
 
     return (
         <TabContext value={value}>
+            
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <TabList
                     onChange={handleChange}
@@ -110,7 +92,9 @@ const Fridge: React.FC<IProps> = ({
                 <Grid container spacing={2}>
                     <Grid item xs={visible ? 9 : 12} xl={visible ? 9 : 12}>
                         <IngredientsTable
-                            ingredients={ingredients.filter(ing => ing.status)}
+                            ingredients={ingredients.filter(
+                                (ing) => ing.status
+                            )}
                             setIngredients={setIngredients}
                             handleOnEdit={handleOnEdit}
                             handleOnCart={handleOnCart}
@@ -141,7 +125,9 @@ const Fridge: React.FC<IProps> = ({
                 <Grid container spacing={2}>
                     <Grid item xs={visible ? 9 : 12} xl={visible ? 9 : 12}>
                         <IngredientsTable
-                            ingredients={ingredients.filter(ing => !ing.status)}
+                            ingredients={ingredients.filter(
+                                (ing) => !ing.status
+                            )}
                             setIngredients={setIngredients}
                             handleOnEdit={handleOnEdit}
                             handleOnCart={handleOnCart}

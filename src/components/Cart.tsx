@@ -1,30 +1,33 @@
-import { Box } from "@mui/material";
+import { Box, Button, Container } from "@mui/material";
 import IngredientsTable from "./IngredientsTable";
-import { ICategory } from "../interfaces/category";
-import { IUnit } from "../interfaces/unit";
 import { IIngredient } from "../interfaces/Ingredient";
+import { useContext, useState } from "react";
+import { defaultContext } from "../App";
 
 type IProps = {
-    categories: ICategory[];
-    units: IUnit[];
-    ingredients: IIngredient[];
     setIngredients: (data: IIngredient[]) => void;
 };
 
-const Cart: React.FC<IProps> = ({
-    categories,
-    units,
-    ingredients,
-    setIngredients,
-}) => {
+const Cart: React.FC<IProps> = ({ setIngredients }) => {
+    const { categories, units, cartIngreds } = useContext(defaultContext);
+    const [cartFlag, setCartFlag] = useState<boolean>(true);
+
     return (
-        <Box>
-            <IngredientsTable
-                setIngredients={setIngredients}
-                categories={categories}
-                units={units}
-                ingredients={ingredients}
-            />
+        <Box mt={2}>
+            <Container maxWidth="md">
+                <IngredientsTable
+                    setIngredients={setIngredients}
+                    categories={categories}
+                    units={units}
+                    ingredients={cartIngreds}
+                    cartFlag={cartFlag}
+                />
+                <Box mt={2}>
+                    <Button variant="contained" href="/fridge">
+                        Back to Shop
+                    </Button>
+                </Box>
+            </Container>
         </Box>
     );
 };
