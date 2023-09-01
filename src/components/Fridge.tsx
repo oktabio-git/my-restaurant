@@ -1,11 +1,11 @@
 import Form from "./Form";
 import IngredientsTable from "./IngredientsTable";
 import { useCallback, useContext, useState } from "react";
-import { IIngredient } from "../interfaces/Ingredient";
+import { IIngredient } from "../interfaces/ingredient";
 import { Box, Button, Grid, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import useFetch from "../hooks/useFetch";
-import { defaultContext } from "../App";
+import IngredientContext from "../context/ingredients/context";
 
 type IProps = {
     setIngredients: (data: IIngredient[]) => void;
@@ -13,8 +13,6 @@ type IProps = {
 };
 
 const Fridge: React.FC<IProps> = ({ setIngredients, setCartIngred }) => {
-    const { ingredients, categories, units, cartIngreds } =
-        useContext(defaultContext);
     const [ingredient, setIngredient] = useState<IIngredient>();
     const { getApis, postApis, updateApis } = useFetch();
     const [editFlag, setEditFlag] = useState(false);
@@ -36,12 +34,12 @@ const Fridge: React.FC<IProps> = ({ setIngredients, setCartIngred }) => {
         setCartIngred(resIngredients);
     }, []);
     const handleOnSubmitEdit = (ingredient: IIngredient) => {
-        const updatedIngs = ingredients.findIndex((ing) => {
-            return ing.id === ingredient.id;
-        });
-        ingredients[updatedIngs] = ingredient;
-        setIngredients(ingredients);
-        setEditFlag(false);
+        // const updatedIngs = ingredients.findIndex((ing) => {
+        //     return ing.id === ingredient.id;
+        // });
+        // ingredients[updatedIngs] = ingredient;
+        // setIngredients(ingredients);
+        // setEditFlag(false);
     };
     const handleOnEdit = (ingredient: IIngredient) => {
         setIngredient(ingredient);
@@ -51,34 +49,33 @@ const Fridge: React.FC<IProps> = ({ setIngredients, setCartIngred }) => {
         setValue(newValue);
     };
     const handleOnCart = async (id: string) => {
-        const indexIng = ingredients.findIndex((ingred: IIngredient) => {
-            return ingred.id === id;
-        });
-        const cartIndex = cartIngreds.findIndex((ingred: IIngredient) => {
-            return ingred.id === id;
-        });
-        let tempIngred = { ...ingredients[indexIng] };
-        if (ingredients[indexIng].quantity > 1) {
-            ingredients[indexIng].quantity--;
-        } else {
-            ingredients[indexIng].quantity--;
-            ingredients[indexIng].status = false;
-        }
-        if (cartIndex > 0) {
-            cartIngreds[cartIndex].quantity++;
-            await updateApis("cart", id, cartIngreds[cartIndex]);
-        } else {
-            tempIngred.quantity = 1;
-            await postApis("cart", tempIngred);
-        }
-        await updateApis("ingredients", id, ingredients[indexIng]);
-        await getIngredients();
-        await getCartIngredients();
+        // const indexIng = ingredients.findIndex((ingred: IIngredient) => {
+        //     return ingred.id === id;
+        // });
+        // const cartIndex = cartIngreds.findIndex((ingred: IIngredient) => {
+        //     return ingred.id === id;
+        // });
+        // let tempIngred = { ...ingredients[indexIng] };
+        // if (ingredients[indexIng].quantity > 1) {
+        //     ingredients[indexIng].quantity--;
+        // } else {
+        //     ingredients[indexIng].quantity--;
+        //     ingredients[indexIng].status = false;
+        // }
+        // if (cartIndex > 0) {
+        //     cartIngreds[cartIndex].quantity++;
+        //     await updateApis("cart", id, cartIngreds[cartIndex]);
+        // } else {
+        //     tempIngred.quantity = 1;
+        //     await postApis("cart", tempIngred);
+        // }
+        // await updateApis("ingredients", id, ingredients[indexIng]);
+        // await getIngredients();
+        // await getCartIngredients();
     };
 
     return (
         <TabContext value={value}>
-            
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <TabList
                     onChange={handleChange}
@@ -92,14 +89,9 @@ const Fridge: React.FC<IProps> = ({ setIngredients, setCartIngred }) => {
                 <Grid container spacing={2}>
                     <Grid item xs={visible ? 9 : 12} xl={visible ? 9 : 12}>
                         <IngredientsTable
-                            ingredients={ingredients.filter(
-                                (ing) => ing.status
-                            )}
                             setIngredients={setIngredients}
                             handleOnEdit={handleOnEdit}
                             handleOnCart={handleOnCart}
-                            categories={categories}
-                            units={units}
                         />
                         <Box mt={2}>
                             <Button variant="contained" onClick={handleToggle}>
@@ -112,8 +104,6 @@ const Fridge: React.FC<IProps> = ({ setIngredients, setCartIngred }) => {
                             <Form
                                 handleOnSubmit={handleOnSubmit}
                                 handleOnSubmitEdit={handleOnSubmitEdit}
-                                categories={categories}
-                                units={units}
                                 editFlag={editFlag}
                                 ingredient={ingredient}
                             />
@@ -125,14 +115,9 @@ const Fridge: React.FC<IProps> = ({ setIngredients, setCartIngred }) => {
                 <Grid container spacing={2}>
                     <Grid item xs={visible ? 9 : 12} xl={visible ? 9 : 12}>
                         <IngredientsTable
-                            ingredients={ingredients.filter(
-                                (ing) => !ing.status
-                            )}
                             setIngredients={setIngredients}
                             handleOnEdit={handleOnEdit}
                             handleOnCart={handleOnCart}
-                            categories={categories}
-                            units={units}
                         />
                         <Box mt={2}>
                             <Button variant="contained" onClick={handleToggle}>
@@ -145,8 +130,6 @@ const Fridge: React.FC<IProps> = ({ setIngredients, setCartIngred }) => {
                             <Form
                                 handleOnSubmit={handleOnSubmit}
                                 handleOnSubmitEdit={handleOnSubmitEdit}
-                                categories={categories}
-                                units={units}
                                 editFlag={editFlag}
                                 ingredient={ingredient}
                             />

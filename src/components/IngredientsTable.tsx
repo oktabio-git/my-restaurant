@@ -8,17 +8,14 @@ import {
     TableHead,
     TableRow,
 } from "@mui/material";
-import { IIngredient } from "../interfaces/Ingredient";
+import { IIngredient } from "../interfaces/ingredient";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { ICategory } from "../interfaces/category";
-import { IUnit } from "../interfaces/unit";
+import { useContext, useEffect } from "react";
+import IngredientContext from "../context/ingredients/context";
 
 type IProps = {
-    ingredients: IIngredient[];
-    categories: ICategory[];
-    units: IUnit[];
     setIngredients: (data: IIngredient[]) => void;
     handleOnEdit?: (data: IIngredient) => void;
     handleOnCart?: (data: string) => void;
@@ -26,14 +23,18 @@ type IProps = {
 };
 
 const IngredientsTable: React.FC<IProps> = ({
-    ingredients,
-    categories,
-    units,
     setIngredients,
     handleOnEdit,
     handleOnCart,
     cartFlag,
 }) => {
+    const { ingredients, categories, units, listIngredients } =
+        useContext(IngredientContext);
+
+    useEffect(() => {
+        listIngredients();
+    }, []);
+
     const deleteIngredient = (id: string) => {
         setIngredients(
             ingredients.filter(

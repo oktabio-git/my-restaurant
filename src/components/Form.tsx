@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { ICategory } from "../interfaces/category";
-import { IUnit } from "../interfaces/unit";
-import { IIngredient } from "../interfaces/Ingredient";
+import { IIngredient } from "../interfaces/ingredient";
 import {
     Alert,
     Button,
@@ -16,19 +14,15 @@ import {
 type IProps = {
     handleOnSubmit: (ingredient: IIngredient) => void;
     handleOnSubmitEdit: (ingredient: IIngredient) => void;
-    categories: ICategory[];
-    units: IUnit[];
-    ingredient?: IIngredient;
     editFlag: boolean;
+    ingredient?: IIngredient;
 };
 
 const Form: React.FC<IProps> = ({
     handleOnSubmit,
     handleOnSubmitEdit,
-    categories,
-    units,
-    ingredient,
     editFlag,
+    ingredient,
 }) => {
     const [formIngredient, setFormIngredient] = useState<IIngredient>({
         id: "",
@@ -122,7 +116,7 @@ const Form: React.FC<IProps> = ({
     };
 
     const handleCancel = () => {};
-    
+
     const handleClose = (
         event?: React.SyntheticEvent | Event,
         reason?: string
@@ -134,21 +128,21 @@ const Form: React.FC<IProps> = ({
         setOpen(false);
     };
 
-    const categoryData = categories.map((category) => {
-        return (
-            <MenuItem key={category.value} value={category.value}>
-                {category.label}
-            </MenuItem>
-        );
-    });
+    // const categoryData = categories.map((category) => {
+    //     return (
+    //         <MenuItem key={category.value} value={category.value}>
+    //             {category.label}
+    //         </MenuItem>
+    //     );
+    // });
 
-    const unitData = units.map((unit) => {
-        return (
-            <MenuItem key={unit.value} value={unit.value}>
-                {unit.label}
-            </MenuItem>
-        );
-    });
+    // const unitData = units.map((unit) => {
+    //     return (
+    //         <MenuItem key={unit.value} value={unit.value}>
+    //             {unit.label}
+    //         </MenuItem>
+    //     );
+    // });
 
     return (
         <Container maxWidth="sm">
@@ -184,7 +178,7 @@ const Form: React.FC<IProps> = ({
                         <MenuItem key={0} value={0}>
                             Select an option
                         </MenuItem>
-                        {categoryData}
+                        {/* {categoryData} */}
                     </TextField>
 
                     <TextField
@@ -217,7 +211,7 @@ const Form: React.FC<IProps> = ({
                         <MenuItem key={0} value={0}>
                             Select an option
                         </MenuItem>
-                        {unitData}
+                        {/* {unitData} */}
                     </TextField>
 
                     <Stack direction="row" spacing={2}>

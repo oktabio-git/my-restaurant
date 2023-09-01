@@ -6,12 +6,10 @@ import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ICategory } from "./interfaces/category";
 import { IUnit } from "./interfaces/unit";
-import { IIngredient } from "./interfaces/Ingredient";
+import { IIngredient } from "./interfaces/ingredient";
 import useFetch from "./hooks/useFetch";
 import Cart from "./components/Cart";
 import React from "react";
-import { IContext, contextState } from "./interfaces/context";
-
 
 const App: React.FC = () => {
     const [categories, setCategories] = useState<ICategory[]>([]);
@@ -34,36 +32,26 @@ const App: React.FC = () => {
     }, []);
 
     return (
-        // <defaultContext.Provider
-        //     value={{
-        //         ingredients,
-        //         categories,
-        //         units,
-        //         cartIngreds,
-        //         setIngredients,
-        //     }}
-        // >
-            <div className="App">
-                <Navbar />
-                <Routes>
-                    <Route path="/" element={<Home></Home>}></Route>
-                    <Route
-                        path="/fridge"
-                        element={
-                            <Fridge
-                                setIngredients={setIngredients}
-                                setCartIngred={setCartIngred}
-                            ></Fridge>
-                        }
-                    ></Route>
-                    <Route
-                        path="/cart"
-                        element={<Cart setIngredients={setCartIngred}></Cart>}
-                    ></Route>
-                    <Route path="/*" element={<Home></Home>}></Route>
-                </Routes>
-            </div>
-        // </defaultContext.Provider>
+        <div className="App">
+            <Navbar />
+            <Routes>
+                <Route path="/" element={<Home></Home>}></Route>
+                <Route
+                    path="/fridge"
+                    element={
+                        <Fridge
+                            setIngredients={setIngredients}
+                            setCartIngred={setCartIngred}
+                        ></Fridge>
+                    }
+                ></Route>
+                <Route
+                    path="/cart"
+                    element={<Cart setIngredients={setCartIngred}></Cart>}
+                ></Route>
+                <Route path="/*" element={<Home></Home>}></Route>
+            </Routes>
+        </div>
     );
 };
 

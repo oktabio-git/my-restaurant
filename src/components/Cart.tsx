@@ -1,15 +1,14 @@
 import { Box, Button, Container } from "@mui/material";
 import IngredientsTable from "./IngredientsTable";
-import { IIngredient } from "../interfaces/Ingredient";
+import { IIngredient } from "../interfaces/ingredient";
 import { useContext, useState } from "react";
-import { defaultContext } from "../App";
+import IngredientContext from "../context/ingredients/context";
 
 type IProps = {
     setIngredients: (data: IIngredient[]) => void;
 };
 
 const Cart: React.FC<IProps> = ({ setIngredients }) => {
-    const { categories, units, cartIngreds } = useContext(defaultContext);
     const [cartFlag, setCartFlag] = useState<boolean>(true);
 
     return (
@@ -17,9 +16,6 @@ const Cart: React.FC<IProps> = ({ setIngredients }) => {
             <Container maxWidth="md">
                 <IngredientsTable
                     setIngredients={setIngredients}
-                    categories={categories}
-                    units={units}
-                    ingredients={cartIngreds}
                     cartFlag={cartFlag}
                 />
                 <Box mt={2}>

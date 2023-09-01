@@ -1,4 +1,4 @@
-import { IIngredient } from "../interfaces/Ingredient";
+import { IIngredient } from "../interfaces/ingredient";
 
 type IProps = {
     ingredient: IIngredient;
